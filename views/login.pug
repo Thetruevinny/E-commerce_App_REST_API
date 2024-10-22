@@ -1,0 +1,14 @@
+doctype html
+html(language='en')
+    head
+        title Sign In 
+    body 
+        h1 Sign In 
+        form(method='post')
+        section 
+            label(for='username') Username 
+            input(id='username' name='username' type='text' autocomplete='username' required autofocus)
+        section 
+            label(for='current-password') Password 
+            input(id='current-password' name='current-password' type='text' autocomplete='current-password' required autofocus)
+        button(type='submit') Submit 

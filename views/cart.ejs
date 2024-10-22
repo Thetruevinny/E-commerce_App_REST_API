@@ -1,0 +1,16 @@
+<!-- For the real application form requests will be sent with actual id attached for testing I wiil be attaching to request body -->
+<h1>Cart</h1>
+<form action="http://localhost:3000/cart/1" method="post">
+    <section>
+        <label for="productId">Product</label>
+        <input id="productId" name="productId" type="number" required autofocus>
+    </section>
+    <section>
+        <label for="quantity">Quantity</label>
+        <input id="quantity" name="quantity" type="number" required>
+    </section>
+    <button type="submit">Add to Cart</button>
+</form>
+<form action="http://localhost:3000/cart/checkout" method="post">
+    <button type="submit">Order Now</button>
+</form>
