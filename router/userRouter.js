@@ -4,6 +4,10 @@ const pool = require('../server/db');
 
 userRouter.use('/:id', (req, res, next) => {
     req.userId = req.params.id;
+    if (req.user.id !== Number(req.userId)) {
+        res.status(400).send('You are not allowed to access this information.');
+        return
+    }
     // Checking if Id value is a number.
     if (Number(req.userId) || Number(req.userId) === 0) {
         next();

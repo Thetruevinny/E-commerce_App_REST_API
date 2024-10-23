@@ -56,7 +56,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: 'The id of the product.'
+          description: The id of the product.
           required: true
           schema:
             type: string
@@ -91,7 +91,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: 'The id of the user.'
+          description: The id of the user.
           required: true
           schema:
             type: string
@@ -124,7 +124,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: 'The id of the user.'
+          description: The id of the user.
           required: true
           schema:
             type: string
@@ -193,7 +193,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: 'The id of the product.'
+          description: The id of the product.
           required: true
           schema:
             type: string
@@ -279,16 +279,16 @@ paths:
       parameters:
         - name: productId
           in: path
-          description: 'The id of the product.'
+          description: The id of the product.
           required: true
           schema:
             type: string
       requestBody:
         description: A new order object
         content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/product'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/product'
       responses:
         '201':
           description: Product added.
@@ -308,6 +308,54 @@ paths:
           description: Default error sample response
       tags:
         - Cart
+  /register:
+    summary: Adds a new user to e-commerce app
+    description: Adding a new user to the e-commerce database.
+    post:
+      summary: Adds a new user to users database table.
+      description: >-
+        A new user is added to the users database. The username is checked to
+        see if it already exists and if it does not the password is hashed and
+        added to the database.
+      operationId: post_register
+      responses:
+        '201':
+          description: Redirected to login page.
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Redirected to login page.:
+                  value: Redirected to login page.
+        '400':
+          description: User already exists.
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                User already exists:
+                  value: User Already Exists.
+        default:
+          description: Default error sample response
+      tags:
+        - Register
+  /login:
+    summary: User login
+    description: Logs in a user into e-commerce application
+    get:
+      summary: Renders login page
+      description: Rendering login page.
+      operationId: get_login
+      responses:
+        '200':
+          description: Renders homepage
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Renders homepage:
+                  value: Renders homepage
+        default:
+          description: Default error sample response
+      tags:
+        - Login
 components:
   schemas:
     user:
