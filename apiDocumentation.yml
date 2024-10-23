@@ -1,0 +1,330 @@
+openapi: 3.0.1
+info:
+  title: E-commerce REST API
+  version: 3.0.1
+  description: >-
+    Application allowing users of a e-commerce website to: view products, add
+    products to their local carts and place orders. Users can also view and
+    change user information as well as viewing previous orders.
+  contact:
+    email: vinodabhik@gmail.com
+    name: Abhik
+paths:
+  /products:
+    summary: Current E-commerce product information.
+    description: >-
+      Obtains product information about items that are current available to
+      purchase with the E-commerce website.
+    get:
+      summary: >-
+        Pulls all the products available in the store so the client can display
+        these for the user.
+      description: >-
+        A list of all products currently in the e-commerce store. Each product
+        is represented by a JSON object containing product id, quantity, price
+        and category of clothing.
+      operationId: get_products
+      responses:
+        '200':
+          description: Default error sample response
+          content:
+            application/json:
+              examples:
+                Products:
+                  value: >-
+                    [{"id":0,"name":"Blue
+                    t-shirt","quantity":100,"price":5,"category":"Shirts"},{"id":4,"name":"Blue
+                    coat","quantity":98,"price":10,"category":"Coats"},{"id":3,"name":"Green
+                    t-shirt","quantity":97,"price":5,"category":"Shirts"},{"id":6,"name":"Jeans","quantity":96,"price":15,"category":"Trousers"},{"id":1,"name":"Red
+                    t-shirt","quantity":94,"price":5,"category":"Shirts"},{"id":7,"name":"Red
+                    Shorts","quantity":96,"price":5,"category":"Shorts"},{"id":5,"name":"Red
+                    coat","quantity":93,"price":10,"category":"Coats"}]
+      tags:
+        - Products
+  /products/{id}:
+    summary: Obtain information on a particular products
+    description: >-
+      Pulls information about a particular product available to purchase within
+      our E-commerce store.
+    get:
+      summary: Return a specific products information.
+      description: >-
+        Obtains a JSON object containing a particular product information which
+        matches the provided url parameters. The information contained is the
+        product id, name, price, quantity and category of product.
+      operationId: get_product_id
+      parameters:
+        - name: id
+          in: path
+          description: 'The id of the product.'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Returns product with id matching input parameter.
+          content:
+            application/json:
+              examples:
+                Product with id 1:
+                  value: >-
+                    {"id":1,"name":"Red
+                    t-shirt","quantity":94,"price":5,"category":"Shirts"}
+        '400':
+          description: Error with product id.
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Product with id matching the url parameter does not exist. (The store may have ran out of the product or removed it).:
+                  value: '''You have entered an incorrect id format.'''
+      tags:
+        - Products
+  /users/{id}:
+    summary: Obtain a specific user's information
+    description: >-
+      Allows a user to pull his current user information from the database. This
+      returns the user id and username.
+    get:
+      summary: Obtain user information which matches the provided id
+      description: Returns a JSON object containing user id, user name and user password.
+      operationId: get_users_id
+      parameters:
+        - name: id
+          in: path
+          description: 'The id of the user.'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Returns JSON object of user information.
+          content:
+            application/json:
+              examples:
+                User information which match id url parameter.:
+                  value: >-
+                    {"id":2,"name":"Vinny","password":"$2b$10$7i8tJTXx5yAbQxtaRo9ZKuUI92BXl6lD47rnx9hYnzhUoXYRR2Ppu"}
+        '400':
+          description: Incorrect user id inputted.
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Error relating to user id:
+                  value: You have entered an incorrect id format.
+        default:
+          description: Default error sample response
+      tags:
+        - Users
+    put:
+      summary: Changes user information for the given user id.
+      description: >-
+        Change user information for the user whose id matches the id passed in
+        the url params.
+      operationId: put_users_id
+      parameters:
+        - name: id
+          in: path
+          description: 'The id of the user.'
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: New user information
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user'
+      responses:
+        '201':
+          description: Succesful user information update.
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Updating user information.:
+                  value: User has been updated.
+        '400':
+          description: Incorrect user id inputted.
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Error relating to user id:
+                  value: You have entered an incorrect id format.
+        default:
+          description: Default error sample response
+      tags:
+        - Users
+  /orders:
+    summary: Returns order information for the current logged in user.
+    description: >-
+      Returns a full list of orders and their totals for which the current
+      logged in user has placed.
+    get:
+      summary: Obtain all orders made by the current logged in user.
+      description: >-
+        Returns a list of all orders made by the current logged in user. Each
+        order is a JSON object with order id and total.
+      operationId: get_orders
+      responses:
+        '200':
+          description: Retrieve all orders made by user.
+          content:
+            application/json:
+              examples:
+                Retrieve all orders made by the user.:
+                  value: >-
+                    [{"id":0,"userid":2,"total":60},{"id":1,"userid":2,"total":55},{"id":2,"userid":2,"total":50},{"id":3,"userid":2,"total":50}]
+        default:
+          description: Default error sample response
+      tags:
+        - Orders
+  /orders/{id}:
+    summary: >-
+      Obtain information about a specific order placed by the current logged in
+      user.
+    description: >-
+      Returns a JSON object containing information relating to the order that
+      matches order id sent with the request.
+    get:
+      summary: Obtain a specific order made by the current logged in user.
+      description: >-
+        Returns a JSON object containing order id and total for the order that
+        matches the id provided in the url parameter.
+      operationId: get_orders_id
+      parameters:
+        - name: id
+          in: path
+          description: 'The id of the product.'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Obtain a specific order by the user.
+          content:
+            application/json:
+              examples:
+                Retrieve a specific order made by user.:
+                  value: '[{"id":2,"userid":2,"total":50}]'
+        default:
+          description: Default error sample response
+      tags:
+        - Orders
+  /cart:
+    summary: Retrieves the current user cart.
+    description: >-
+      Returns a list with all the products in the current user cart. Each
+      product in the list contains the product id and quantity of each product 
+      in the cart.
+    get:
+      summary: Renders the cart page.
+      description: >-
+        Renders the cart page to allow users to add specific products to their
+        own cart.
+      operationId: get_cart
+      responses:
+        '200':
+          description: Renders the cart page.
+          content:
+            application/xml:
+              examples:
+                Cart Page:
+                  value: Renders cart page.
+        default:
+          description: Default error sample response
+      tags:
+        - Cart
+  /cart/checkout:
+    summary: Places an order with all the products currently sitting the user cart.
+    description: Creates a new order and places an order with the store.
+    post:
+      summary: Creates an order with all items currently in the user's cart.
+      description: >-
+        Writes a new order to the store's database. Each product is checked if
+        it still exists in the store and the quantity to be ordered does not
+        exceed that currently in store. If all checks clear, the order is
+        placed.
+      operationId: post_cart_checkout
+      responses:
+        '201':
+          description: Order Created
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Order Placed:
+                  value: Order saved and should be with you in a week.
+        '500':
+          description: Product not found.
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Product in cart no longer exists or product is not in stock anymore.:
+                  value: We have removed product {id} from our store.
+        default:
+          description: Default error sample response
+      tags:
+        - Cart
+  /cart/{productId}:
+    summary: This adds a product to the user's cart.
+    description: >-
+      This adds a product with the specific productId along with the quantity
+      requested to the user cart.
+    post:
+      summary: Add a product to the cart that matches the product id.
+      description: >-
+        Adds a product the user's cart. When this path is first called the cart
+        is initialised as an empty array within a session. Then each product is
+        added to the cart if it does not already exist in the cart. If the
+        product exists the quantity value is cahnged to the new value.
+      operationId: post_cart_productId
+      parameters:
+        - name: productId
+          in: path
+          description: 'The id of the product.'
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: A new order object
+        content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/product'
+      responses:
+        '201':
+          description: Product added.
+          content:
+            application/xml:
+              examples:
+                Redirects user back to cart page:
+                  value: Re-renders the cart page.
+        '400':
+          description: Incorrect id format.
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Incorrect id format supplied:
+                  value: You have entered an incorrect id format.
+        default:
+          description: Default error sample response
+      tags:
+        - Cart
+components:
+  schemas:
+    user:
+      type: object
+      properties:
+        name:
+          type: string
+        password:
+          type: string
+      xml:
+        name: user
+    product:
+      type: object
+      properties:
+        productId:
+          type: string
+        quantity:
+          type: string
+      xml:
+        name: product
