@@ -17,7 +17,7 @@ cartRouter.use('/:productId', (req, res, next) => {
 
 // Creating Cart for the user session
 cartRouter.get('/', (req, res, next) => {
-    res.status(201).render('cart');
+    res.status(200).render('cart');
 });
 
 cartRouter.post('/checkout', async (req, res, next) => {
